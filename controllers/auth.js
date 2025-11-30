@@ -87,6 +87,7 @@ const loginUser = async (req = express.request, res = express.response) => {
       ok: true,
       uid: user.id,
       name: user.name,
+      role: user.role,
       token: token,
     });
   } catch (error) {
@@ -98,4 +99,18 @@ const loginUser = async (req = express.request, res = express.response) => {
   }
 };
 
-export { createUser, loginUser };
+const revalidateJWT = async (req = express.request, res = express.res) => {
+  const uid = req.uid;
+  const name = req.name;
+
+  const token = await generateJWT(uid, name);
+
+  res.json({
+    ok: true,
+    uid,
+    name,
+    token,
+  });
+};
+
+export { createUser, loginUser, revalidateJWT };

@@ -1,10 +1,11 @@
 import express from "express";
 import dbConnection from "./database/config.js";
-import authRouter from "./routes/auth.js";
 import cors from "cors";
 import path from "path";
 import { config } from "dotenv";
 import "dotenv/config";
+import authRouter from "./routes/auth.js";
+import routegramsRouter from "./routes/routegrams.js";
 
 //Creacion del servidor
 const app = express();
@@ -24,6 +25,9 @@ app.use(cors());
 
 //Manejo de las rutas de autenticacion
 app.use("/api/auth", authRouter);
+
+//Manerjo de las rutas de rutagramas
+app.use("/api/routegrams", routegramsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hola mundo");
