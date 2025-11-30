@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/User.js";
-import { genSaltSync, hashSync } from "bcryptjs";
+import { genSaltSync, hashSync, compareSync } from "bcryptjs";
 import generateJWT from "../helpers/jwt.js";
 
 const createUser = async (req = express.request, res = express.response) => {
@@ -15,7 +15,7 @@ const createUser = async (req = express.request, res = express.response) => {
     let user = await User.findOne({ identityCard });
 
     if (user) {
-      res.status(409).json({
+      return res.status(409).json({
         ok: false,
         msg: "Ya existe un usuario con estas credenciales",
       });
@@ -58,7 +58,44 @@ const loginUser = async (req = express.request, res = express.response) => {
   const { identityCard, password } = req.body;
 
   try {
-  } catch (error) {}
+    //Chequear que el usuaario con identityCard existe en la base de datos
+    let user = await User.findOne({ identityCard });
+
+    if (!user) {
+      return res.status(401).json({
+        ok: false,
+        msg: "No existen usuarios registrados con estas credenciales",
+      });
+    }
+
+    //Comparar la contraseña que se ingresa contra el hash en la base de de datos
+    const validPassword = compareSync(password, user.password);
+
+    // Si existe y la constraseña es valida creamos el token y devolvemos la informacion del usuario
+    if (!validPassword) {
+      return res.status(401).json({
+        ok: false,
+        msg: "Password incorrecto",
+      });
+    }
+
+    //Generamos el JWT
+    const token = await generateJWT(user.id, user.name);
+
+    //Devolvemos la respuesta
+    res.status(201).json({
+      ok: true,
+      uid: user.id,
+      name: user.name,
+      token: token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Por favor hable con el administrador",
+    });
+  }
 };
 
 export { createUser, loginUser };
