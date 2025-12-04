@@ -11,6 +11,7 @@ import validateJWT from "../middlewares/validateJWT.js";
 const authRouter = Router();
 
 //TODO: Implementar validaciones con express-validator en todas las rutas
+//Crear usuario
 authRouter.post(
   "/new",
   [
@@ -26,6 +27,7 @@ authRouter.post(
   createUser
 );
 
+//Login usuario
 authRouter.post(
   "/",
   [
@@ -41,6 +43,7 @@ authRouter.post(
   loginUser
 );
 
+//Renovar JWT
 authRouter.get("/renew", validateJWT, revalidateJWT);
 
 export default authRouter;

@@ -8,6 +8,12 @@ const RoutegramSchema = new Schema(
       ref: "User", //referencia al modelo User
       required: true,
     },
+    typeRoute: {
+      type: String,
+      required: true,
+      enum: ["Casa-Trabajo", "Trabajo-Casa"],
+      default: "Casa-Trabajo",
+    },
     location: {
       type: {
         type: String,

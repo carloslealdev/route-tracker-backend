@@ -13,6 +13,7 @@ const protect = async (req = request, res = response, next) => {
     });
   }
 
+  //Extraigo el uid del token
   const { uid } = jwt.verify(token, process.env.SECRET_JWT_SEED);
   //   console.log(uid);
 
@@ -27,6 +28,7 @@ const protect = async (req = request, res = response, next) => {
     });
   }
 
+  //Inyecto el user en la request
   req.user = user;
 
   next();

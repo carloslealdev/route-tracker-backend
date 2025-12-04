@@ -83,7 +83,7 @@ const loginUser = async (req = express.request, res = express.response) => {
     const token = await generateJWT(user.id, user.name);
 
     //Devolvemos la respuesta
-    res.status(201).json({
+    res.status(200).json({
       ok: true,
       uid: user.id,
       name: user.name,
