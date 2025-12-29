@@ -114,6 +114,34 @@ const getMyRoutegrams = async (req = request, res = response) => {
   }
 };
 
+const deleteRoutegram = async (req = request, res = response) => {
+  const routegramId = req.params.id;
+
+  try {
+    const routegram = await Routegram.findById(routegramId);
+
+    if (!routegram) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe rutagrama con ese Id",
+      });
+    }
+
+    await Routegram.findByIdAndDelete(routegramId);
+
+    res.status(200).json({
+      ok: true,
+      msg: "Rutagrama eliminado",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
 //Controller para admins
 const getAllRoutegrams = async (req = request, res = response) => {
   //Traigo todas las rutas de la base de datos
@@ -171,4 +199,5 @@ export {
   getAllRoutegrams,
   getRoutegramsByWorkerId,
   updateRoutegram,
+  deleteRoutegram,
 };

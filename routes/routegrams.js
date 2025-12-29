@@ -5,6 +5,7 @@ host + api/routegrams
 import { Router } from "express";
 import {
   createRoutegram,
+  deleteRoutegram,
   getAllRoutegrams,
   getMyRoutegrams,
   getRoutegramsByWorkerId,
@@ -25,6 +26,9 @@ routegramsRouter.post("/", protect, createRoutegram);
 
 //Actualizar rutagrama
 routegramsRouter.put("/:id", protect, updateRoutegram);
+
+//Eliminar rutagrama
+routegramsRouter.delete("/:id", protect, deleteRoutegram);
 
 //Obtener rutagramas del usuario logueado
 routegramsRouter.get("/my-routegrams", protect, getMyRoutegrams);
