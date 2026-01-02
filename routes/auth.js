@@ -7,6 +7,7 @@ import { createUser, loginUser, revalidateJWT } from "../controllers/auth.js";
 import { check } from "express-validator";
 import validateFields from "../middlewares/validateFields.js";
 import validateJWT from "../middlewares/validateJWT.js";
+import protect from "../middlewares/protect.js";
 
 const authRouter = Router();
 
@@ -44,6 +45,6 @@ authRouter.post(
 );
 
 //Renovar JWT
-authRouter.get("/renew", validateJWT, revalidateJWT);
+authRouter.get("/renew", [protect, validateJWT], revalidateJWT);
 
 export default authRouter;
