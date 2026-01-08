@@ -99,6 +99,43 @@ const loginUser = async (req = express.request, res = express.response) => {
   }
 };
 
+const getAllUsersInfo = async (req, res) => {
+  try {
+    const usersWithRoutes = await User.aggregate([
+      // 1. Buscamos solo los que tienen rol 'Worker' (opcional)
+      { $match: { role: "Worker" } },
+
+      // 2. Hacemos un "join" con la colección de rutagramas
+      {
+        $lookup: {
+          from: "routegrams", // Nombre de la colección en MongoDB (suele ser en plural)
+          localField: "_id", // Campo del Usuario
+          foreignField: "workerId", // Campo en el Rutagrama que referencia al ID del usuario
+          as: "routegrams", // Nombre del nuevo array que se creará en el resultado
+        },
+      },
+
+      // 3. Proyectamos solo lo que necesitamos (Seguridad: no enviar password)
+      {
+        $project: {
+          password: 0,
+          __v: 0,
+          "routegrams.location": 0, // Opcional: ocultamos las coordenadas pesadas para la lista general
+          "routegrams.__v": 0,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      ok: true,
+      users: usersWithRoutes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ ok: false, msg: "Error al obtener usuarios" });
+  }
+};
+
 const revalidateJWT = async (req = express.request, res = express.res) => {
   const uid = req.uid;
   const { name, role } = req.user;
@@ -114,4 +151,4 @@ const revalidateJWT = async (req = express.request, res = express.res) => {
   });
 };
 
-export { createUser, loginUser, revalidateJWT };
+export { createUser, loginUser, getAllUsersInfo, revalidateJWT };

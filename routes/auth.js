@@ -3,7 +3,12 @@ host + api/auth
 */
 
 import { Router } from "express";
-import { createUser, loginUser, revalidateJWT } from "../controllers/auth.js";
+import {
+  createUser,
+  getAllUsersInfo,
+  loginUser,
+  revalidateJWT,
+} from "../controllers/auth.js";
 import { check } from "express-validator";
 import validateFields from "../middlewares/validateFields.js";
 import validateJWT from "../middlewares/validateJWT.js";
@@ -43,6 +48,9 @@ authRouter.post(
   ],
   loginUser
 );
+
+//Obtener todos los usuarios
+authRouter.get("/all", [protect, validateJWT], getAllUsersInfo);
 
 //Renovar JWT
 authRouter.get("/renew", [protect, validateJWT], revalidateJWT);
