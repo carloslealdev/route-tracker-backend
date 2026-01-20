@@ -8,7 +8,7 @@ const createUser = async (req = express.request, res = express.response) => {
   //identityCard => como valor unico de cada trabajador
   //name => para el JWT
   //password para el hash
-  const { identityCard, name, password } = req.body;
+  const { identityCard, fullName, password } = req.body;
 
   try {
     //Verificamos si existe algún usuario con el identityCard
@@ -32,7 +32,7 @@ const createUser = async (req = express.request, res = express.response) => {
     user.password = hashSync(password, salt);
 
     //Generamos el JWT
-    const token = await generateJWT(user.id, name);
+    const token = await generateJWT(user.id, user.fullName);
 
     //Guardo el user
     await user.save();
@@ -41,7 +41,7 @@ const createUser = async (req = express.request, res = express.response) => {
     res.status(201).json({
       ok: true,
       uid: user.id,
-      name: user.name,
+      name: user.fullName,
       token: token,
     });
   } catch (error) {
@@ -80,13 +80,17 @@ const loginUser = async (req = express.request, res = express.response) => {
     }
 
     //Generamos el JWT
-    const token = await generateJWT(user.id, user.name);
+    const token = await generateJWT(user.id, user.fullName);
 
     //Devolvemos la respuesta
     res.status(200).json({
       ok: true,
       uid: user.id,
-      name: user.name,
+      name: user.fullName,
+      email: user.email,
+      identityCard: user.identityCard,
+      phone: user.phone,
+      address: user.address,
       role: user.role,
       token: token,
     });
@@ -103,7 +107,7 @@ const getAllUsersInfo = async (req, res) => {
   try {
     const usersWithRoutes = await User.aggregate([
       // 1. Buscamos solo los que tienen rol 'Worker' (opcional)
-      { $match: { role: "Worker" } },
+      // { $match: { role: "Worker" } },
 
       // 2. Hacemos un "join" con la colección de rutagramas
       {

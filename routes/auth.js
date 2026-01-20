@@ -21,16 +21,19 @@ const authRouter = Router();
 authRouter.post(
   "/new",
   [
-    check("name", "El nombre es obligatorio").not().isEmpty(),
+    check("firstName", "El nombre es obligatorio").not().isEmpty(),
+    check("lastName", "El apellido es obligatorio").not().isEmpty(),
     check("password", "El password debe tener al menos 6 caracteres").isLength({
       min: 6,
     }),
     check("identityCard", "El documento de identidad es obligatorio")
       .not()
       .isEmpty(),
+    check("phone", "El telefono es obligatorio").not().isEmpty(),
+    check("address", "La dirección es obligatoria").not().isEmpty(),
     validateFields,
   ],
-  createUser
+  createUser,
 );
 
 //Login usuario
@@ -46,7 +49,7 @@ authRouter.post(
 
     validateFields,
   ],
-  loginUser
+  loginUser,
 );
 
 //Obtener todos los usuarios
