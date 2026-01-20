@@ -142,14 +142,14 @@ const getAllUsersInfo = async (req, res) => {
 
 const revalidateJWT = async (req = express.request, res = express.res) => {
   const uid = req.uid;
-  const { name, role } = req.user;
+  const { fullName, role } = req.user;
 
-  const token = await generateJWT(uid, name);
+  const token = await generateJWT(uid, fullName);
 
   res.json({
     ok: true,
     uid,
-    name,
+    name: fullName,
     role,
     token,
   });
