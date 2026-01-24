@@ -78,7 +78,7 @@ const updateRoutegram = async (req = request, res = response) => {
     const routegramUpdated = await Routegram.findByIdAndUpdate(
       routegramId,
       newRoutegram,
-      { new: true }
+      { new: true },
     );
 
     res.json({
@@ -147,7 +147,8 @@ const getAllRoutegrams = async (req = request, res = response) => {
   //Traigo todas las rutas de la base de datos
   try {
     const routegrams = await Routegram.find({}).populate("workerId", [
-      "name",
+      "firstName",
+      "lastName",
       "identityCard",
       "role",
     ]);
@@ -170,7 +171,8 @@ const getRoutegramsByWorkerId = async (req = request, res = response) => {
 
   try {
     const routegrams = await Routegram.find({ workerId }).populate("workerId", [
-      "name",
+      "firstName",
+      "lastName",
       "identityCard",
       "role",
     ]);

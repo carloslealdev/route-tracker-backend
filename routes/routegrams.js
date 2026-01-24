@@ -34,13 +34,13 @@ routegramsRouter.delete("/:id", protect, deleteRoutegram);
 routegramsRouter.get("/my-routegrams", protect, getMyRoutegrams);
 
 //Obtener todos los rutagramas (Admin)
-routegramsRouter.get("/", [protect, adminOnly], getAllRoutegrams);
+routegramsRouter.get("/all", [protect, adminOnly], getAllRoutegrams);
 
 //Obtener rutagramas por workerId (Admin)
 routegramsRouter.get(
   "/:workerId",
   [protect, adminOnly],
-  getRoutegramsByWorkerId
+  getRoutegramsByWorkerId,
 );
 
 export default routegramsRouter;

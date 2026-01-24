@@ -6,6 +6,7 @@ import { config } from "dotenv";
 import "dotenv/config";
 import authRouter from "./routes/auth.js";
 import routegramsRouter from "./routes/routegrams.js";
+import usersRouter from "./routes/users.js";
 
 //Creacion del servidor
 const app = express();
@@ -28,6 +29,9 @@ app.use("/api/auth", authRouter);
 
 //Manerjo de las rutas de rutagramas
 app.use("/api/routegrams", routegramsRouter);
+
+//Manerjo de las rutas de usuarios
+app.use("/api/users", usersRouter);
 
 app.get("/", (req, res) => {
   res.send("Hola mundo");
