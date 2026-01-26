@@ -110,4 +110,29 @@ const deleteUser = async (req = express.request, res = express.res) => {
   }
 };
 
-export { getAllUsersInfo, getUserById, deleteUser };
+const updateUserInfo = async (req = express.request, res = express.res) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe usuario con este Id",
+      });
+    }
+
+    await User.findByIdAndUpdate(userId, req.body);
+
+    res.status(200).json({
+      ok: true,
+      msg: "Usuario actualizado",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ ok: false, msg: "Error al actualizar usuario" });
+  }
+};
+
+export { getAllUsersInfo, getUserById, deleteUser, updateUserInfo };

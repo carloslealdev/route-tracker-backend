@@ -7,6 +7,7 @@ import {
   deleteUser,
   getAllUsersInfo,
   getUserById,
+  updateUserInfo,
 } from "../controllers/users.js";
 import protect from "../middlewares/protect.js";
 import validateJWT from "../middlewares/validateJWT.js";
@@ -22,5 +23,8 @@ usersRouter.get("/:id", [protect, validateJWT, adminOnly], getUserById);
 
 //Eliminar usuario
 usersRouter.delete("/:id", [protect, validateJWT, adminOnly], deleteUser);
+
+//Actualizar usuario
+usersRouter.put("/:id", [protect, validateJWT, adminOnly], updateUserInfo);
 
 export default usersRouter;
