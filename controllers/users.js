@@ -123,10 +123,14 @@ const updateUserInfo = async (req = express.request, res = express.res) => {
       });
     }
 
-    await User.findByIdAndUpdate(userId, req.body);
+    // await User.findByIdAndUpdate(userId, req.body);
+    const userUpdated = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
 
     res.status(200).json({
       ok: true,
+      user: userUpdated,
       msg: "Usuario actualizado",
     });
   } catch (error) {
