@@ -25,6 +25,14 @@ const RoutegramSchema = new Schema(
         required: true,
       },
     },
+    travelTime: {
+      type: Number,
+      required: true,
+    },
+    distance: {
+      type: Number,
+      required: true,
+    },
 
     active: {
       type: Boolean,
@@ -33,7 +41,7 @@ const RoutegramSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 RoutegramSchema.index({ location: "2dsphere" });

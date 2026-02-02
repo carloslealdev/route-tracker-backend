@@ -105,7 +105,7 @@ const loginUser = async (req = express.request, res = express.response) => {
 
 const revalidateJWT = async (req = express.request, res = express.res) => {
   const uid = req.uid;
-  const { fullName, role } = req.user;
+  const { fullName, role, email, identityCard, phone, address } = req.user;
 
   const token = await generateJWT(uid, fullName);
 
@@ -113,6 +113,10 @@ const revalidateJWT = async (req = express.request, res = express.res) => {
     ok: true,
     uid,
     name: fullName,
+    email,
+    identityCard,
+    phone,
+    address,
     role,
     token,
   });

@@ -27,6 +27,8 @@ const createRoutegram = async (req = request, res = response) => {
     workerId: _id,
     typeRoute: req.body.typeRoute,
     location: req.body,
+    travelTime: req.body.travelTime,
+    distance: req.body.distance,
   };
 
   //Creo el rutagrama
