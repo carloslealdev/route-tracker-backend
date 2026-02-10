@@ -40,7 +40,7 @@ const getDashboardStats = async (req, res = response) => {
           // 2. Clasificamos en rangos (Buckets)
           $bucket: {
             groupBy: "$distance", // Campo a evaluar (en metros)
-            boundaries: [0, 5000, 10000, 20000, 50000], // Cortes: 0-5km, 5-10km, 10-20km, 20-50km
+            boundaries: [0, 5000, 10000, 20000, 30000, 40000, 50000], // Cortes: 0-5km, 5-10km, 10-20km, 20-50km
             default: "Mas de 50km", // Para los que superen el último limite
             output: {
               count: { $sum: 1 },
@@ -57,12 +57,15 @@ const getDashboardStats = async (req, res = response) => {
                   { case: { $eq: ["$_id", 0] }, then: "0-5 km" },
                   { case: { $eq: ["$_id", 5000] }, then: "5-10 km" },
                   { case: { $eq: ["$_id", 10000] }, then: "10-20 km" },
-                  { case: { $eq: ["$_id", 20000] }, then: "20-50 km" },
+                  { case: { $eq: ["$_id", 20000] }, then: "20-30 km" },
+                  { case: { $eq: ["$_id", 30000] }, then: "30-40 km" },
+                  { case: { $eq: ["$_id", 40000] }, then: "40-50 km" },
+                  { case: { $eq: ["$_id", 50000] }, then: "50-60 km" },
                 ],
-                default: "Extremo (+50km)",
+                default: "Extremo (+60km)",
               },
             },
-            employees: "$count",
+            trabajadores: "$count",
           },
         },
       ]),
