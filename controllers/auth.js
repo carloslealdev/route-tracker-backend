@@ -103,7 +103,7 @@ const loginUser = async (req = express.request, res = express.response) => {
   }
 };
 
-const revalidateJWT = async (req = express.request, res = express.res) => {
+const revalidateJWT = async (req = express.request, res = express.response) => {
   const uid = req.uid;
   const { fullName, role, email, identityCard, phone, address } = req.user;
 
